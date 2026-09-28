@@ -19,4 +19,5 @@ Spatial context for property decisions. No named-person tracking, cameras, aircr
 - Secret provider keys stay on lodgist-api, never in the browser.
 - MIT code may be adapted with its license notice. Third-party data is not MIT.
 - Area context is not a safety rating.
+- v0 response shape: docs/V0_CONTRACT.md.
 - See docs/DATA_SOURCES.md and .agents/skills/shadowspark-spatial-intelligence/SKILL.md.
