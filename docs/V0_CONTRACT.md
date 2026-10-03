@@ -24,7 +24,7 @@ Neighborhood context for one property. Not a safety rating.
 ## Fields
 
 - `property`: the property pin, `lat` and `lng` in WGS84 decimal degrees.
-- `category`: one of `roads`, `hospitals`, `schools`, `markets`, `pharmacies`, `transit`.
+- `category`: the contract names `roads`, `hospitals`, `schools`, `markets`, `pharmacies`, `transit`. The loader emits only `hospitals`, `schools`, `markets`, and `pharmacies`. Roads and transit are not queried. Transit is not an allowed layer id.
 - `name`, `lat`, `lng`: the item as given by its source.
 - `distance_m`: straight-line metres from the property pin.
 - `source_id`: must match an `id` in docs/DATA_SOURCES.md.
