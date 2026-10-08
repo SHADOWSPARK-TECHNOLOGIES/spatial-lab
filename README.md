@@ -8,7 +8,7 @@ Spatial context for property decisions. No named-person tracking, cameras, aircr
 
 ## Sequence
 
-1. v0 neighborhood: property pin, roads, hospitals, schools, markets, pharmacies, transit, labels.
+1. v0 neighborhood: property pin, hospitals, schools, markets, pharmacies. Roads and transit are named and still unwired.
 2. v1 traffic and weather, only after a source is cleared.
 3. v2 terrain.
 4. v3 AI summary, labeled as inference.
