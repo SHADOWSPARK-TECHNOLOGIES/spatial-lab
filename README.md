@@ -20,4 +20,5 @@ Spatial context for property decisions. No named-person tracking, cameras, aircr
 - MIT code may be adapted with its license notice. Third-party data is not MIT.
 - Area context is not a safety rating.
 - v0 response shape: docs/V0_CONTRACT.md.
+- Phase 3A map stack: docs/PHASE_3A_MAP_STACK.md.
 - See docs/DATA_SOURCES.md and .agents/skills/shadowspark-spatial-intelligence/SKILL.md.

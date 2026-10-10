@@ -26,6 +26,7 @@ export const SAMPLE_PIN = Object.freeze({
   longitude: 7.035,
 });
 
+/** @param {{ listingId: string, latitude: number, longitude: number }} pin */
 export function assertPin(pin) {
   if (!pin || typeof pin.listingId !== "string" || pin.listingId.trim() === "") {
     throw new Error("listingId required");
@@ -38,12 +39,17 @@ export function assertPin(pin) {
   }
 }
 
+/** @param {string} id */
 export function assertLayerId(id) {
   if (BANNED_LAYER_IDS.includes(id) || !ALLOWED_LAYER_IDS.includes(id)) {
     throw new Error(`layer not allowed: ${id}`);
   }
 }
 
+/**
+ * @param {{ listingId: string, latitude: number, longitude: number }} pin
+ * @param {string} status
+ */
 export function neighborhoodCatalog(pin, status) {
   assertPin(pin);
   if (status === "error") {
