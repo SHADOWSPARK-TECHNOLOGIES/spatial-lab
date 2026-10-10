@@ -107,7 +107,7 @@ Details and the production gate stay in `docs/DATA_SOURCES.md`.
 | `aws-terrarium` | Terrain DEM and 3D terrain mesh | none | Terrarium PNG on the AWS Open Data bucket `elevation-tiles-prod`. Static archive. Attribution: Terrain Tiles © Mapzen, AWS Open Data. |
 | `aws-terrarium-eu` | Terrain fallback candidate | none | Registered so the chain is real. `available()` is false because the EU mirror is not reachable. |
 | `maplibre-terrain-mesh` | 3D terrain | none | Uses the selected terrain provider. No extra host. |
-| `google-photorealistic-3d` | Optional photorealistic 3D | server | Fixed host `tile.googleapis.com`. Unavailable until `serverEnv.GOOGLE_MAP_TILES_KEY` is passed in by the server process. Not cleared for production Lodgist. |
+| `google-photorealistic-3d` | Optional photorealistic 3D | server | Fixed host `tile.googleapis.com`. Requires `GOOGLE_MAP_TILES_KEY` and `ENABLE_GOOGLE_PHOTOREALISTIC_3D=true`; with `NODE_ENV=production` also `commercialUse: APPROVED_COMMERCIAL` (currently UNKNOWN, so off). Attribution: Google Maps plus per-tile copyright. Not cleared for production Lodgist. |
 
 Tests do not call those hosts. Tile fetches go through `fetchImpl`, matching the Overpass loader.
 

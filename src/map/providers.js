@@ -57,6 +57,7 @@
  * @property {string} attribution
  * @property {KeyExposure} keyExposure
  * @property {boolean} optional
+ * @property {string} [commercialUse]
  * @property {readonly string[]} fixedHosts
  * @property {() => boolean} available
  * @property {() => ClientView} clientView
@@ -76,6 +77,13 @@ export const TERRAIN_ATTRIBUTION = "Terrain Tiles © Mapzen, AWS Open Data";
 export const OSM_USER_AGENT = "ShadowSpark-spatial-lab/3a (research; +https://github.com/SHADOWSPARK-TECHNOLOGIES/spatial-lab)";
 
 export const PHOTOREALISTIC_CLIENT_ROOT = "/map/3d/photorealistic/root.json";
+export const PHOTOREALISTIC_ATTRIBUTION = "Google Maps";
+/**
+ * Licensing class for google-photorealistic-3d. Stays UNKNOWN until the Google
+ * Maps Platform terms are reviewed and approved; production needs APPROVED_COMMERCIAL.
+ * @type {"APPROVED_COMMERCIAL" | "APPROVED_WITH_ATTRIBUTION" | "DEVELOPMENT_ONLY" | "NON_COMMERCIAL" | "UNKNOWN"}
+ */
+export const PHOTOREALISTIC_COMMERCIAL_USE = "UNKNOWN";
 
 /** @param {ClientView} view */
 export function assertClientView(view) {
@@ -230,9 +238,10 @@ export function photorealisticProvider(options = {}) {
     role: "3d",
     mode: "photorealistic",
     label: "Photorealistic 3D tiles",
-    attribution: "Google",
+    attribution: PHOTOREALISTIC_ATTRIBUTION,
     keyExposure: "server",
     optional: true,
+    commercialUse: PHOTOREALISTIC_COMMERCIAL_USE,
     fixedHosts: ["tile.googleapis.com"],
     available: () => available,
     clientView: () =>
@@ -241,7 +250,7 @@ export function photorealisticProvider(options = {}) {
         role: "3d",
         mode: "photorealistic",
         label: "Photorealistic 3D tiles",
-        attribution: "Google",
+        attribution: PHOTOREALISTIC_ATTRIBUTION,
         keyExposure: "server",
         optional: true,
         type: "3d-tiles",

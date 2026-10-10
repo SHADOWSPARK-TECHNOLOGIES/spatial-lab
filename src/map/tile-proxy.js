@@ -1,5 +1,5 @@
 import { OPENFREEMAP_ATTRIBUTION, OPENFREEMAP_STYLE_URL, OSM_ATTRIBUTION, OSM_USER_AGENT, PHOTOREALISTIC_CLIENT_ROOT, TERRAIN_ATTRIBUTION } from "./providers.js";
-import { PHOTOREALISTIC_KEY, readServerKey } from "./server-key.js";
+import { PHOTOREALISTIC_KEY, photorealisticEnabled, readServerKey } from "./server-key.js";
 
 /**
  * @typedef {Object} ResolvedTile
@@ -65,7 +65,7 @@ export function resolveStyle(providerId, options = {}) {
 export function resolvePhotorealisticRoot(options = {}) {
   refuseUserUrl(options);
   const key = readServerKey(options.serverEnv, PHOTOREALISTIC_KEY);
-  if (!key) throw new Error("photorealistic provider unavailable");
+  if (!key || !photorealisticEnabled(options.serverEnv)) throw new Error("photorealistic provider unavailable");
   return Object.freeze({
     host: "tile.googleapis.com",
     href: `https://tile.googleapis.com/v1/3dtiles/root.json?key=${encodeURIComponent(key)}`,

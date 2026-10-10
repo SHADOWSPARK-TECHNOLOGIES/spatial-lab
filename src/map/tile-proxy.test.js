@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildServerScene } from "./server.js";
 import { fetchProxiedTile, resolvePhotorealisticRoot, resolveStyle, resolveTile } from "./tile-proxy.js";
+import { photorealisticEnabled } from "./server-key.js";
+import { photorealisticProvider } from "./providers.js";
 
 const SERVER_KEY = "server-only-photorealistic-key";
+const ENABLED_ENV = { GOOGLE_MAP_TILES_KEY: SERVER_KEY, ENABLE_GOOGLE_PHOTOREALISTIC_3D: "true" };
 
 test("raster and terrain tiles resolve to fixed hosts", async () => {
   const tile = resolveTile({ providerId: "osm-raster", z: 12, x: 2110, y: 2015 });
@@ -45,15 +48,15 @@ test("a supplied url is refused and the EU mirror stays unavailable", async () =
 });
 
 test("photorealistic root keeps the server key off the client path and scene", () => {
-  const root = resolvePhotorealisticRoot({ serverEnv: { GOOGLE_MAP_TILES_KEY: SERVER_KEY } });
+  const root = resolvePhotorealisticRoot({ serverEnv: ENABLED_ENV });
   assert.equal(root.host, "tile.googleapis.com");
   assert.equal(root.href.includes(SERVER_KEY), true);
   assert.equal(root.clientPath.includes(SERVER_KEY), false);
   assert.equal(root.clientPath, "/map/3d/photorealistic/root.json");
   assert.throws(() => resolvePhotorealisticRoot({ serverEnv: {} }), /photorealistic provider unavailable/);
-  assert.throws(() => resolvePhotorealisticRoot({ url: "https://evil.example", serverEnv: { GOOGLE_MAP_TILES_KEY: SERVER_KEY } }), /user-supplied URL/);
+  assert.throws(() => resolvePhotorealisticRoot({ url: "https://evil.example", serverEnv: ENABLED_ENV }), /user-supplied URL/);
 
-  const scene = buildServerScene({ mode: "photorealistic", serverEnv: { GOOGLE_MAP_TILES_KEY: SERVER_KEY } });
+  const scene = buildServerScene({ mode: "photorealistic", serverEnv: ENABLED_ENV });
   const text = JSON.stringify(scene);
   assert.equal(text.includes(SERVER_KEY), false);
   assert.equal(text.includes("GOOGLE_MAP_TILES_KEY"), false);
@@ -61,4 +64,23 @@ test("photorealistic root keeps the server key off the client path and scene", (
   assert.equal(scene.fallback, false);
   assert.equal(scene.threeD && scene.threeD.rootPath, "/map/3d/photorealistic/root.json");
   assert.equal(scene.threeD && scene.threeD.keyExposure, "server");
+});
+
+test("photorealistic needs the key and the explicit flag, and stays off in production until APPROVED_COMMERCIAL", () => {
+  const keyOnly = buildServerScene({ mode: "photorealistic", serverEnv: { GOOGLE_MAP_TILES_KEY: SERVER_KEY } });
+  assert.equal(keyOnly.fallback, true);
+  assert.notEqual(keyOnly.mode, "photorealistic");
+  assert.throws(() => resolvePhotorealisticRoot({ serverEnv: { GOOGLE_MAP_TILES_KEY: SERVER_KEY } }), /photorealistic provider unavailable/);
+  const flagOnly = buildServerScene({ mode: "photorealistic", serverEnv: { ENABLE_GOOGLE_PHOTOREALISTIC_3D: "true" } });
+  assert.equal(flagOnly.fallback, true);
+  const prodEnv = { ...ENABLED_ENV, NODE_ENV: "production" };
+  const prod = buildServerScene({ mode: "photorealistic", serverEnv: prodEnv });
+  assert.equal(prod.fallback, true);
+  assert.notEqual(prod.mode, "photorealistic");
+  assert.throws(() => resolvePhotorealisticRoot({ serverEnv: prodEnv }), /photorealistic provider unavailable/);
+  assert.equal(photorealisticEnabled(prodEnv), false);
+  assert.equal(photorealisticEnabled(prodEnv, { commercialUse: "APPROVED_COMMERCIAL" }), true);
+  assert.equal(photorealisticEnabled(ENABLED_ENV), true);
+  assert.equal(photorealisticProvider().commercialUse, "UNKNOWN");
+  assert.equal(photorealisticProvider().attribution, "Google Maps");
 });

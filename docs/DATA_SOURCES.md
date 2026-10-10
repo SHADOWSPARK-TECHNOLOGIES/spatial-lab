@@ -15,7 +15,7 @@ Nothing below is cleared for production Lodgist. This file is the gate, not a pe
 | openfreemap-liberty | OpenFreeMap / OpenStreetMap | public MapLibre style, no key | OSM ODbL; OpenMapTiles code BSD, design CC BY 4.0 | yes, with attribution | OpenFreeMap © OpenMapTiles Data from OpenStreetMap | global | lab basemap, not production Lodgist |
 | osm-raster-tiles | OpenStreetMap Foundation | lab proxy, fixed host `tile.openstreetmap.org` | ODbL plus the OSMF public tile usage policy | not for heavy traffic on the public tile server | © OpenStreetMap contributors | global | lab fallback |
 | aws-terrain-tiles | Mapzen / AWS Open Data | public S3, no key, lab proxy | mixed open elevation sources, static archive | not cleared | Terrain Tiles © Mapzen, AWS Open Data | global | lab terrain and 3D mesh |
-| google-photorealistic-3d | Google | server key `GOOGLE_MAP_TILES_KEY`, unset here | Google Maps Platform terms | review first | as required by Google | partial | optional, unavailable until a server passes the key |
+| google-photorealistic-3d | Google | server key `GOOGLE_MAP_TILES_KEY`, unset here | Google Maps Platform terms | review first | as required by Google | partial | optional; needs key + ENABLE_GOOGLE_PHOTOREALISTIC_3D=true; commercialUse UNKNOWN, so off in production |
 | geocoder | unnamed | server-side key on lodgist-api | provider terms | review first | as required | unknown | not connected |
 | weather | unnamed | server-side key | provider terms | review first | as required | unknown | v1, not connected |
 | traffic | unnamed | licensed feed only | provider terms | review first | as required | unknown | v1, not connected |

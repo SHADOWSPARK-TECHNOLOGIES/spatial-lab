@@ -1,5 +1,5 @@
 import { buildScene } from "./scene.js";
-import { PHOTOREALISTIC_KEY, readServerKey } from "./server-key.js";
+import { PHOTOREALISTIC_KEY, photorealisticEnabled, readServerKey } from "./server-key.js";
 
 /**
  * Build a client scene from an explicit server env object.
@@ -24,7 +24,7 @@ export function buildServerScene(options = {}) {
     camera: options.camera,
     layers: options.layers,
     registry: options.registry,
-    photorealistic: key !== null,
+    photorealistic: photorealisticEnabled(options.serverEnv),
   });
   if (key && JSON.stringify(scene).includes(key)) {
     throw new Error("server key leaked into scene");
