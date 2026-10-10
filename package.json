@@ -1,5 +1,15 @@
 {
   "name": "spatial-lab",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "lint": "node scripts/lint.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test",
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "typescript": "^5.9.3"
+  }
 }
