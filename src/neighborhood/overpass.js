@@ -27,10 +27,14 @@ export function assertRadius(radiusM) {
 export function buildOverpassQuery(pin, radiusM) {
   assertPin(pin);
   assertRadius(radiusM);
-  const clauses = Object.keys(AMENITY_LAYER)
-    .map((amenity) => `node["amenity"="${amenity}"](around:${radiusM},${pin.latitude},${pin.longitude});`)
-    .join("");
-  return `[out:json][timeout:15];(${clauses});out body 20;`;
+  // nwr = node + way + relation (amenities are often mapped as areas).
+  // Per-type "out center 10;" prevents one category from crowding out others
+  // and emits a "center" member for ways/relations.
+  const parts = Object.keys(AMENITY_LAYER).map(
+    (amenity) =>
+      `nwr["amenity"="${amenity}"](around:${radiusM},${pin.latitude},${pin.longitude});\nout center 10;`,
+  );
+  return `[out:json][timeout:15];\n${parts.join("\n")}`;
 }
 
 export function straightLineMeters(lat1, lng1, lat2, lng2) {
@@ -81,14 +85,17 @@ export function normalizeElements(elements) {
     const layer = AMENITY_LAYER[element?.tags?.amenity];
     if (!layer) continue;
     assertLayerId(layer);
-    if (typeof element.lat !== "number" || typeof element.lon !== "number") continue;
-    if (!Number.isFinite(element.lat) || !Number.isFinite(element.lon)) continue;
+    // Ways/relations carry coordinates in element.center; nodes carry lat/lon.
+    const lat = element?.center?.lat ?? element?.lat;
+    const lon = element?.center?.lon ?? element?.lon;
+    if (typeof lat !== "number" || typeof lon !== "number") continue;
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
     amenities.push({
       id: String(element.id),
       layer,
-      name: typeof element.tags.name === "string" && element.tags.name.trim() ? element.tags.name.trim() : null,
-      latitude: element.lat,
-      longitude: element.lon,
+      name: typeof element.tags?.name === "string" && element.tags.name.trim() ? element.tags.name.trim() : null,
+      latitude: lat,
+      longitude: lon,
       attribution: ATTRIBUTION,
     });
   }
