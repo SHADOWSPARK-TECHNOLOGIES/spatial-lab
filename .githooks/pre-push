@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf "\n=============================================\n"
+printf " [Local-CI] Running pre-push verification...\n"
+printf "=============================================\n\n"
+
+if ! npm test; then
+  printf "\n=============================================\n" >&2
+  printf " [Local-CI] ERROR: Tests failed! Push aborted.\n" >&2
+  printf "=============================================\n\n" >&2
+  exit 1
+fi
+
+printf "\n=============================================\n"
+printf " [Local-CI] All tests passed! Proceeding with push.\n"
+printf "=============================================\n\n"
+exit 0
