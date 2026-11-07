@@ -12,6 +12,11 @@ test("sample pin is accepted", () => {
   assert.equal(view.amenities.length, 0);
 });
 
+test("out of range and non-finite pins are rejected", () => {
+  assert.throws(() => assertLayerId("transit"), /layer not allowed/);
+  assert.throws(() => neighborhoodCatalog({ listingId: "example-12", latitude: 91, longitude: 7 }, "ready"), /latitude out of range/);
+  assert.throws(() => neighborhoodCatalog({ listingId: "example-12", latitude: 5.485, longitude: Number.NaN }, "ready"), /longitude out of range/);
+});
 test("banned layer ids throw", () => {
   for (const id of BANNED) {
     assert.throws(() => assertLayerId(id), /layer not allowed/);

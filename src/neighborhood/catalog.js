@@ -30,10 +30,10 @@ export function assertPin(pin) {
   if (!pin || typeof pin.listingId !== "string" || pin.listingId.trim() === "") {
     throw new Error("listingId required");
   }
-  if (typeof pin.latitude !== "number" || pin.latitude < -90 || pin.latitude > 90) {
+  if (typeof pin.latitude !== "number" || !Number.isFinite(pin.latitude) || pin.latitude < -90 || pin.latitude > 90) {
     throw new Error("latitude out of range");
   }
-  if (typeof pin.longitude !== "number" || pin.longitude < -180 || pin.longitude > 180) {
+  if (typeof pin.longitude !== "number" || !Number.isFinite(pin.longitude) || pin.longitude < -180 || pin.longitude > 180) {
     throw new Error("longitude out of range");
   }
 }
