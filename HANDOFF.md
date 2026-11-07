@@ -2,9 +2,18 @@
 
 Repository: https://github.com/SHADOWSPARK-TECHNOLOGIES/spatial-lab.git
 Directory: /home/moronto/spatial-lab
-Branch: main
-Commit: 3ad97a30515f5be832248c90db1417fc22d56ca0
-This change is an uncommitted diff on that commit. It was not merged, deployed, or pushed. No new service was started.
+Branch: feat/issue-6-spatial-audit (Pull Request #7)
+Base: main
+
+## Current Status (7 November 2026)
+- **Active PR**: [PR #7](https://github.com/SHADOWSPARK-TECHNOLOGIES/spatial-lab/pull/7)
+- **Test Suite**: 17 passed, 0 failed via `npm test` (`node:test`).
+- **Gating**: Local `.githooks/pre-push` gate enforces test execution on all pushes.
+- **preview.html**: Tracked in repository; `overpass.test.js` includes `existsSync` skip-guard for environments without the file.
+
+### Historical Snapshot (7 October 2026)
+Original baseline: commit `3ad97a30515f5be832248c90db1417fc22d56ca0`.
+The historical record below documents the initial uncommitted diff and local verification prior to PR #7.
 
 ## Verified behavior
 
@@ -60,12 +69,10 @@ Screenshots from that check: /tmp/spatial-preview/desktop.png and /tmp/spatial-p
 
 The in-app browser blocked file:// and 127.0.0.1, so that tool did not render the page. The Chromium check did.
 
-## Pull request 4
+## Pull request 4 (Merged & Closed)
 
 https://github.com/SHADOWSPARK-TECHNOLOGIES/spatial-lab/pull/4
-Branch docs/overpass-contract at b6450d6. Open. Docs only: README.md, docs/V0_CONTRACT.md, docs/extraction.md.
-This diff does not touch those files. It does not overwrite that branch.
-The pull request describes origin/main, where the loader does not emit `items`. This working tree does emit `items`. Do not merge that pull request as a description of this diff.
+Branch docs/overpass-contract merged into main as commit a922a3b. Docs-only documentation of initial Overpass loader. PR #4 is now closed.
 
 Untracked files left alone: .worktrees/ and docs/lodgist-integration-assessment.md.
 

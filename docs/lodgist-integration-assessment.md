@@ -1,5 +1,8 @@
 # Spatial Lab audit and Lodgist integration boundary
 
+> [!NOTE]
+> **Assessment Baseline (4 October 2026)**: This document reflects the historical architectural assessment at commit `3ad97a3`. For the current feature branch and contract status as of November 2026, see [Current State Addendum (November 2026)](#current-state-addendum-november-2026).
+
 Date: 4 October 2026. This is an architecture assessment, not an implementation plan and not a security audit. It does not authorize copying God's Eye View into Lodgist.
 
 ## Verdict
@@ -182,3 +185,23 @@ It does not copy God's Eye View source, does not change Lodgist, and does not cl
     > "You asked, so it’s happening. God’s Eye View, open sourced, live on GitHub."
 [7] https://raw.githubusercontent.com/bilawalsidhu/gods-eye-view/main/LICENSE — GEV LICENSE (raw main)
     > "In short: the MIT grant does not extend to any third-party data."
+
+---
+
+## Current State Addendum (November 2026)
+
+### 1. Contract & Loader Evolution
+- `package.json` now includes `scripts.test` (`node --test`), `scripts.ci`, and automatic git pre-push hook configuration (`prepare`).
+- The v0 contract adapter is implemented (`src/neighborhood/assemble.js` and `overpass.js`), emitting the exact contract shape: `property`, `items` (with `category`, `lat`, `lng`, `distance_m`, `distance_label`, `source_id`, `kind`).
+- Coordinate validation is hardened with `Number.isFinite` in `src/neighborhood/catalog.js`.
+
+### 2. Issue #6 Deliverables Status Matrix
+
+| Deliverable | Status | Evidence / Notes |
+|---|---|---|
+| Upstream GEV source/license audit | VERIFIED (No Code Copied) | Audit confirmed upstream MIT code vs third-party non-commercial data boundaries. No upstream source files copied. |
+| Runnable neighborhood explorer contract | VERIFIED | Schema contract verified by 17 unit tests. Straight-line distances explicitly labeled as derived. |
+| Provider decision matrix | PARTIAL / UNDER REVIEW | `docs/DATA_SOURCES.md` maintains `osm-overpass-extract` under review. No production clearance. |
+| Failed/empty/low-bandwidth UX tests | VERIFIED | Tests in `overpass.test.js` and `assemble.test.js` verify fail-closed behavior on HTTP error, timeout, and empty results. |
+| PR with code & tests | OPEN (PR #7) | PR #7 open against `main`. 17/17 tests passing locally. Zero production deployment authorized. |
+
